@@ -43,8 +43,8 @@ export function Hero() {
     };
 
     const unlock = () => {
-      if (unlocked) return;
       video.muted = true;
+      video.playsInline = true;
       const playAttempt = video.play();
       if (playAttempt) {
         playAttempt
@@ -173,7 +173,11 @@ export function Hero() {
       start();
     };
 
-    video.addEventListener("loadeddata", unlock);
+    void fetch("/experience-v3.mp4", { cache: "force-cache" });
+    unlock();
+
+    video.addEventListener("loadedmetadata", unlock);
+    video.addEventListener("canplay", unlock);
     video.addEventListener("seeked", onSeeked);
     UNLOCK_EVENTS.forEach((event) =>
       window.addEventListener(event, unlock, { passive: true }),
@@ -204,7 +208,8 @@ export function Hero() {
       running = false;
       cancelAnimationFrame(frame);
       io.disconnect();
-      video.removeEventListener("loadeddata", unlock);
+      video.removeEventListener("loadedmetadata", unlock);
+      video.removeEventListener("canplay", unlock);
       video.removeEventListener("seeked", onSeeked);
       UNLOCK_EVENTS.forEach((event) =>
         window.removeEventListener(event, unlock),
@@ -232,9 +237,13 @@ export function Hero() {
             ref={videoRef}
             src="/experience-v3.mp4"
             poster="/frames/00-start.jpg"
+            width={1280}
+            height={720}
             muted
             playsInline
+            autoPlay
             preload="auto"
+            disableRemotePlayback
             aria-hidden="true"
           />
           <div className="cine-scrim" />

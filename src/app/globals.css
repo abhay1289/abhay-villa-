@@ -368,6 +368,7 @@ video {
   height: 100svh;
   overflow: hidden;
   color: #f4f1ea;
+  background: #06070a url("/frames/00-start.jpg") center / cover no-repeat;
 }
 
 .cine-stage video {

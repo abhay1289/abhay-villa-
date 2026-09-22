@@ -48,6 +48,7 @@ export const viewport: Viewport = {
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
+  preload("/experience-v3.mp4", { as: "video", type: "video/mp4" });
   preload("/frames/00-start.jpg", { as: "image" });
 
   return (
